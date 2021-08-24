@@ -26,7 +26,31 @@ let server = http.createServer((request, response) => {
             return response.end(data)
         })
     } else {
-        response.end('Page not found')
+        let filePath = request.url
+        let reqMimeType = path.extname(filePath)
+        const mimeType = {
+            ".jpg": 'image/jpg',
+            ".mp4": 'video/mp4',
+            ".html": 'text/html',
+            ".js": 'text/javascript',
+            ".css": 'text/css',
+            ".json": 'application/json',
+            ".png": 'image/png',
+            ".gif": 'image/gif',
+            ".svg": 'image/svg + xml',
+            ".wav": 'audio/wav',
+            ".woff": 'application/font-woff',
+            ".ttf": 'application/font-ttf',
+            ".eot": 'application/vnd.ms=fontobject',
+            ".otf": 'application/font-otf',
+            ".wasm": 'application/wasm'
+        }
+
+        const contentType = mimeType[reqMimeType] || 'application/octet-stream'
+        fs.readFile(path.join('data', filePath), (err, data) => {
+            response.writeHead(200, {'Content-Type': contentType})
+            return response.end(data)
+        })
     }
 })
 server.listen(PORT, () => {
