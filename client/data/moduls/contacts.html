@@ -18,6 +18,22 @@
             <li><a href="/gallery">GALLERY</a></li>
         </ul>
     </div>
+
+    <ul id="list"></ul>
+
+
+    <script>
+        ;(async()=>{
+            let response = await fetch('http://localhost:4000/users')
+            let users = (await response.json());
+
+            users.map((user)=>{
+                let li = document.createElement('li')
+                li.textContent = user.userName
+                list.append(li)
+            })
+        })()
+    </script>
 </body>
 
 </html>
